@@ -1,0 +1,205 @@
+<html xmlns:mso="urn:schemas-microsoft-com:office:office" xmlns:msdt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+<head>
+<!--
+================================================
+        Date picker instead of slider
+ ===============================================
+-->
+    <title>FW Slider with bar graph</title>
+    <!--[if gte mso 9]>
+    <xml>
+        <mso:CustomDocumentProperties>
+            <mso:CompatibleManagedProperties msdt:dt="string"></mso:CompatibleManagedProperties>
+            <mso:TemplateHidden msdt:dt="string">0</mso:TemplateHidden>
+            <mso:CompatibleSearchDataTypes msdt:dt="string">;#DateTime</mso:CompatibleSearchDataTypes>
+            <mso:MasterPageDescription msdt:dt="string"></mso:MasterPageDescription>
+            <mso:ContentTypeId msdt:dt="string">0x0101002039C03B61C64EC4A04F5361F385106604</mso:ContentTypeId>
+            <mso:TargetControlType msdt:dt="string">;#Refinement;#</mso:TargetControlType>
+            <mso:HtmlDesignAssociated msdt:dt="string">1</mso:HtmlDesignAssociated>
+            <mso:CrawlerXSLFile msdt:dt="string"></mso:CrawlerXSLFile>
+            <mso:HtmlDesignPreviewUrl msdt:dt="string"></mso:HtmlDesignPreviewUrl>
+    </xml>
+    <![endif]--><mso:HtmlDesignConversionSucceeded msdt:dt="string">True</mso:HtmlDesignConversionSucceeded>
+</head>    
+<body>
+<script>
+		$includeCSS(this.url, "https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css");
+	</script>
+
+    <div id="RangeFilter">
+        <!--#_     
+        RegisterSod('jquery-1.12.4.js', 'https://code.jquery.com/jquery-1.12.4.js');   
+        RegisterSod('jquery-ui.js', 'https://code.jquery.com/ui/1.12.1/jquery-ui.js');   
+        RegisterSod('jquery-1.11.2.min.js', 'https://code.jquery.com/jquery-1.11.2.min.js');   
+        RegisterSod('moments.js', 'https://searchignitedemo.sharepoint.com/search/Style%20Library/JS/moment.js');
+        RegisterSod('bootstrap-datepicker.js', 'https://searchignitedemo.sharepoint.com/search/Style%20Library/JS/bootstrap-datepicker.js');
+        
+        var listData = ctx.ListData;
+        var hasControl = true;
+
+        // Check if the current Refinement Control exists
+        if ($isNull(ctx.RefinementControl) || $isNull(ctx.ClientControl)) hasControl = false;
+
+        if (hasControl) {
+            // Check if listdata contains data.the below check is commented so that if no data is present in the date range still this date time control will be visible to clear the filter and reload original data.
+            if(!$isNull(listData) && !$isEmptyArray(listData)) {
+                // Element IDs
+                var controlID = ctx.RefinementControl.containerId + "_" + ctx.RefinementControl.propertyName;
+                var fromInput = controlID + "_from";
+                var toInput = controlID + "_to";
+                var refineLink = controlID + "_refine";
+                var clearLink = controlID + "_clear";
+
+                // Show the refinement title
+                var isExpanded = Srch.Refinement.getExpanded(ctx.RefinementControl.propertyName);
+                var iconClass = (isExpanded == "true"? "ms-ref-uparrow" : "ms-ref-downarrow");
+                var refinerCatTitle = Srch.Refinement.getRefinementTitle(ctx.RefinementControl);
+                // Display style > needed to hide the refinement list when collapsed
+                var displayStyle = (isExpanded == "true"? "" : "none");
+
+                // Set input form values
+                var from = "";
+                var to = "";
+                var currentRefinementCategory = ctx.ClientControl.getCurrentRefinementCategory(ctx.RefinementControl.propertyName);
+                // Check if the current control refinement is in use
+                if(!Srch.U.n(currentRefinementCategory) && currentRefinementCategory.get_tokenCount() == 1) {
+                    // Parse the current filter token to find the current range condition
+                    var matchResults = Srch.U.parseTypedRangeToken(currentRefinementCategory.t[0], null);
+                    // check for a range token match with corresponding min and max
+                    if (matchResults != null && matchResults.length > 2) {
+                        var from = matchResults[1];
+                        var to = matchResults[2];
+                        if(from!="")
+                        {
+                        var fromDate=new Date(from);
+                        var userTimezoneOffset = fromDate.getTimezoneOffset() * 60000;
+                        fromDate = new Date(fromDate.getTime() + userTimezoneOffset);
+                        var month=("0" + (fromDate.getMonth()+1)).slice(-2);
+                        var day = ("0" + fromDate.getDate()).slice(-2);
+                        from= fromDate.getFullYear() + "-" + month + "-"+day;
+                        }                    
+                        if(to!="")
+                        {
+                         var toDate=new Date(to);
+                         var userTimezoneOffset = toDate.getTimezoneOffset() * 60000;
+                        toDate= new Date(toDate.getTime() + userTimezoneOffset);
+
+                           var month=("0" + (toDate.getMonth()+1)).slice(-2);
+                           var day = ("0" + toDate.getDate()).slice(-2);
+                        
+                        to= toDate.getFullYear() + "-" + month + "-"+day;
+                        }
+                    }
+                }
+
+
+_#-->
+                <div id='Container'>
+                    _#= Srch.U.collapsibleRefinerTitle(ctx.RefinementControl.propertyName, ctx.ClientControl.get_id(), refinerCatTitle, iconClass) =#_
+<br/>
+                    <div class='ms-ref-unselSec' style='display:_#= $htmlEncode(displayStyle) =#_'>
+		 			 
+                     <div class="row" style="padding-bottom:5px">
+                     <div class="col-xs-24 col-sm-24 col-md-24 col-lg-24">
+                        <label for='_#= fromInput =#_' style="padding-bottom:5px">From</label> &nbsp;&nbsp;<br/>
+                        <input class = "form-control form-datepicker" type="text" data-date-format = "DD/MM/YYYY" id='_#= fromInput =#_' name='from' value='_#= from =#_' />
+                        </div>
+                        </div>
+
+                         <div class="row" style="padding-bottom:5px">
+                        <div class="col-xs-24 col-sm-24 col-md-24 col-lg-24">
+                        <label for='_#= toInput =#_' style="padding-bottom:5px">To</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br/>
+                        <input class = "form-control form-datepicker" type="text"  data-date-format = "DD/MM/YYYY" id='_#= toInput =#_' name='to' value='_#= to =#_' />
+                        </div>
+                        </div>
+
+                        <div class="row" style="padding-bottom:5px">
+                        <div class="col-xs-24 col-sm-24 col-md-24 col-lg-24">
+                      <a class="label label-primary" style="margin-right: 0px !important" href='javascript:{}' id="_#= refineLink =#_">Refine</a>
+                        <a class="label label-primary" style="margin-right: 0px !important" href='javascript:{}' id="_#= clearLink =#_">Clear</a>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+<!--#_
+function initializeDatepicker() {
+	// Retrieve the two hyperlinks
+	var refineLinkElm = document.getElementById(refineLink);
+	var clearLinkElm = document.getElementById(clearLink);
+
+	// Create an onclick event for the refinement link
+	refineLinkElm.onclick = function () {
+		// Retrieve the two input fields
+		var fromInputElm = document.getElementById(fromInput);
+		var toInputElm = document.getElementById(toInput);
+
+		// Check if the two input fields contains a value, otherwise nothing needs to be done
+		if (fromInputElm.value.trim() !== "" || toInputElm.value.trim() !== "") {
+			// Retrieve the input values
+			var fromValue = fromInputElm.value.trim();
+			var toValue = toInputElm.value.trim();
+
+			// Refinement value
+			//if (ctx.ListData[0].Type === "DateTime") {
+			//	var splittedFrom = fromValue.split("-");
+			//	fromValue = splittedFrom[0] + '-' + splittedFrom[1] + '-' + splittedFrom[2];
+			//	var splittedTo = toValue.split("-");
+			//	toValue = splittedTo[0] + '-' + splittedTo[1] + '-' + splittedTo[2];
+			//}
+			
+			// Create the refinement JSON value string
+			var refinement = '{"' + ctx.RefinementControl.propertyName + '":["range(' + fromValue + 'T00:00:00Z,' + toValue + 'T23:59:59Z)"]}';
+			$getClientControl(this).updateRefinersJSON(refinement);
+		}
+	};
+
+	// Create a onclick event to remove the refinement
+	clearLinkElm.onclick = function () {
+		// NULL Refinement value to remove the refinement
+		var refinement = '{"' + ctx.RefinementControl.propertyName + '":null}';
+		$getClientControl(this).updateRefinersJSON(refinement);
+	};
+
+	var isoDateFormat = "yy-mm-dd",
+	from = $("#" + fromInput)
+		.datepicker({
+			defaultDate: "+1w",
+			changeMonth: true,
+          dateFormat:isoDateFormat,
+			numberOfMonths: 1,
+			onSelect: function (selected) {
+				$("#" + toInput).datepicker("option", "minDate", selected)
+			}
+		}),
+	to = $("#" + toInput).datepicker({
+			defaultDate: "+1w",
+			changeMonth: true,
+          dateFormat:isoDateFormat,
+			numberOfMonths: 1,
+			onSelect: function (selected) {
+				$("#" + fromInput).datepicker("option", "maxDate", selected)
+			}
+		});
+}
+
+ctx.OnPostRender = [];
+ctx.OnPostRender.push(function () {
+	if (!window.jQuery) {
+		EnsureScriptFunc("jquery-1.12.4.js", null, function () {
+			EnsureScriptFunc("jquery-ui.js", null, function () {
+				initializeDatepicker();
+
+			});
+		});
+	} else {
+
+		initializeDatepicker();
+	}
+});
+}
+}
+            
+_#-->
+    </div>
+</body>
+</html>
